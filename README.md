@@ -15,7 +15,7 @@ pip install pandas openpyxl twilio
 Set `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER`, and `TWILIO_TO_NUMBER`. Place the January through June workbooks (`janeiro.xlsx` through `junho.xlsx`) in the working directory, then run:
 
 ```bash
-python ferias.py
+python sales_target_sms_alert.py
 ```
 
 Use newly rotated Twilio credentials; credentials were previously committed in this repository's history.
