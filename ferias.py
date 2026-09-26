@@ -1,10 +1,19 @@
+import os
+
 import pandas as pd
 from twilio.rest import Client
 
-# Your Account SID from twilio.com/console
-account_sid = "ACdb615e894e5ca87d26246797f8707d4e"
-# Your Auth Token from twilio.com/console
-auth_token  = "45f31103954859dfa4a0c6f1f96163e6"
+account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
+sender_number = os.environ.get("TWILIO_FROM_NUMBER")
+recipient_number = os.environ.get("TWILIO_TO_NUMBER")
+
+if not all((account_sid, auth_token, sender_number, recipient_number)):
+    raise SystemExit(
+        "Set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER, "
+        "and TWILIO_TO_NUMBER before running this script."
+    )
+
 client = Client(account_sid, auth_token)
 
 
@@ -18,8 +27,8 @@ for mes in lista_meses:
         vendas = tabela_vendas.loc[tabela_vendas['Vendas'] > 55000, 'Vendas'].values[0]
         print(f'No mês de {mes} alguem bateu a meta. Vendedor: {vendedor}, Vendas: {vendas}')
         message = client.messages.create(
-            #to="tirar o comentario e colocar o seu numero ou um numero valido",
-            from_="+14156341438",
+            to=recipient_number,
+            from_=sender_number,
             body=f'No mês de {mes} alguem bateu a meta. Vendedor: {vendedor}, Vendas: {vendas}')
         print(message.sid)
 
